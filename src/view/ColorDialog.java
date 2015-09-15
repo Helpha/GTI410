@@ -16,6 +16,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,45 +118,39 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
-rgbMediator = new RGBColorMediator(result, imageWidths, 30);
+
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		ColorSlider csRed = new ColorSlider("R:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csGreen = new ColorSlider("G:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csBlue = new ColorSlider("B:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
 		
-		rgbMediator.setRedCS(csRed);
-		rgbMediator.setGreenCS(csGreen);
-		rgbMediator.setBlueCS(csBlue);
-		
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(csRed);
-		panel.add(csGreen);
-		panel.add(csBlue);
+		//http://web.forret.com/tools/color.asp?C=0%2C000&M=0%2C000&Y=0%2C200&K=0%2C667
 		
 		return panel;
 	}
-	
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
-rgbMediator = new RGBColorMediator(result, imageWidths, 30);
-		
+		HSVColorMediator hsvColorMediator = new HSVColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		ColorSlider csRed = new ColorSlider("R:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csGreen = new ColorSlider("G:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csBlue = new ColorSlider("B:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
 		
-		rgbMediator.setRedCS(csRed);
-		rgbMediator.setGreenCS(csGreen);
-		rgbMediator.setBlueCS(csBlue);
+		ColorSlider csHue = new ColorSlider("H:", result.getPixel().getRed(), rgbMediator.getRedImage());
+		ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
+		ColorSlider csValue = new ColorSlider("V:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		
+		
+		//hsvColorMediator.setHue(csHue);
+		//hsvColorMediator.setSaturation(csSaturation);
+	//	hsvColorMediator.setValue(csValue);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(csRed);
-		panel.add(csGreen);
-		panel.add(csBlue);
+		panel.add(csHue);
+		panel.add(csSaturation);
+		panel.add(csValue);
+		
+
+		
 		
 		return panel;
+		
 	}
 }
 

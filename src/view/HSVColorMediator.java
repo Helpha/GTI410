@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import model.ObserverIF;
 import model.Pixel;
 
 /***
@@ -36,7 +37,7 @@ if(h < 0 ) h += 360; // (assume h entre 0 et 360)
  * exemple
  * http://colorizer.org/
  */
-public class HSVColorMediator {
+public class HSVColorMediator extends Object implements SliderObserver, ObserverIF{
 		
 	public Color returnTest(){
 		Color c = Color.getHSBColor((float)0.25,(float) 0.9,(float) 0.9);
@@ -54,10 +55,6 @@ public class HSVColorMediator {
 	}
 	
 	
-	
-	
-	//scrap starts here ===============================================================================
-	
 	ColorSlider hueCS;
 	ColorSlider saturationCS;
 	ColorSlider valueCS;
@@ -74,8 +71,6 @@ public class HSVColorMediator {
 	public HSVColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight) {
 		this.imagesWidth = imagesWidth;
 		this.imagesHeight = imagesHeight;
-		
-		
 	
 	}
 		
@@ -84,7 +79,8 @@ public class HSVColorMediator {
 		 */
 		public void setHueCS(ColorSlider slider) {
 			hueCS = slider;
-			//slider.addObserver(this);
+			
+			slider.addObserver(this);
 		}
 	
 		/**
@@ -92,7 +88,7 @@ public class HSVColorMediator {
 		 */
 		public void setSaturationCS(ColorSlider slider) {
 			saturationCS = slider;
-			//slider.addObserver(this);
+			slider.addObserver(this);
 		}
 	
 		/**
@@ -100,11 +96,92 @@ public class HSVColorMediator {
 		 */
 		public void setValueCS(ColorSlider slider) {
 			valueCS = slider;
-			//slider.addObserver(this);
+			slider.addObserver(this);
 		}
-		
-		
-		
+
+		@Override
+		public void update(ColorSlider cs, int v) {
+			boolean updateHue = false;
+			boolean updateSaturation = false;
+			boolean updateValue = false;
+			if (cs == hueCS && v != hue) {
+				hue = v;
+				updateSaturation = true;
+				updateValue = true;
+			}
+			if (cs == saturationCS && v != saturation) {
+				saturation = v;
+				updateHue = true;
+				updateValue = true;
+			}
+			if (cs == valueCS && v != value) {
+				value = v;
+				updateHue = true;
+				updateSaturation = true;
+			}
+			if (updateHue) {
+				//computeHueImage(hue, saturation, value);
+			}
+			if (updateSaturation) {
+				//computeSaturationImage(hue, saturation, value);
+			}
+			if (updateValue) {
+				//computeValueImage(hue, saturation, value);
+			}
+			
+			//Pixel pixel = new Pixel(red, green, blue, 255);
+			//result.setPixel(pixel);
+		}
+
+		@Override
+		public void update() {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+//		
+//		public void computeHueImage(float hue, float saturation, float value) { 
+//			Pixel p = new Pixel(red, green, blue, 255); 
+//			for (int i = 0; i<imagesWidth; ++i) {
+//				p.setRed((int)(((double)i / (double)imagesWidth)*255.0)); 
+//				int rgb = p.getARGB();
+//				for (int j = 0; j<imagesHeight; ++j) {
+//					redImage.setRGB(i, j, rgb);
+//				}
+//			}
+//			if (redCS != null) {
+//				redCS.update(redImage);
+//			}
+//		}
+//		
+//		public void computeSaturationImage(float hue, float saturation, float value) {
+//			Pixel p = new Pixel(red, green, blue, 255); 
+//			for (int i = 0; i<imagesWidth; ++i) {
+//				p.setGreen((int)(((double)i / (double)imagesWidth)*255.0)); 
+//				int rgb = p.getARGB();
+//				for (int j = 0; j<imagesHeight; ++j) {
+//					greenImage.setRGB(i, j, rgb);
+//				}
+//			}
+//			if (greenCS != null) {
+//				greenCS.update(greenImage);
+//			}
+//		}
+//		
+//		public void computeValueImage(float hue, float saturation, float value) { 
+//			Pixel p = new Pixel(red, green, blue, 255); 
+//			for (int i = 0; i<imagesWidth; ++i) {
+//				p.setBlue((int)(((double)i / (double)imagesWidth)*255.0)); 
+//				int rgb = p.getARGB();
+//				for (int j = 0; j<imagesHeight; ++j) {
+//					blueImage.setRGB(i, j, rgb);
+//				}
+//			}
+//			if (blueCS != null) {
+//				blueCS.update(blueImage);
+//			}
+//		}
 		
 		
 		//conversion to do
@@ -122,86 +199,6 @@ public class HSVColorMediator {
 //		computeGreenImage(red, green, blue);
 //		computeBlueImage(red, green, blue); 	
 //	}
-//	
-//	
-//	/*
-//	 * @see View.SliderObserver#update(double)
-//	 */
-//	public void update(ColorSlider s, int v) {
-//		boolean updateRed = false;
-//		boolean updateGreen = false;
-//		boolean updateBlue = false;
-//		if (s == redCS && v != red) {
-//			red = v;
-//			updateGreen = true;
-//			updateBlue = true;
-//		}
-//		if (s == greenCS && v != green) {
-//			green = v;
-//			updateRed = true;
-//			updateBlue = true;
-//		}
-//		if (s == blueCS && v != blue) {
-//			blue = v;
-//			updateRed = true;
-//			updateGreen = true;
-//		}
-//		if (updateRed) {
-//			computeRedImage(red, green, blue);
-//		}
-//		if (updateGreen) {
-//			computeGreenImage(red, green, blue);
-//		}
-//		if (updateBlue) {
-//			computeBlueImage(red, green, blue);
-//		}
-//		
-//		Pixel pixel = new Pixel(red, green, blue, 255);
-//		result.setPixel(pixel);
-//	}
-//	
-//	public void computeRedImage(int red, int green, int blue) { 
-//		Pixel p = new Pixel(red, green, blue, 255); 
-//		for (int i = 0; i<imagesWidth; ++i) {
-//			p.setRed((int)(((double)i / (double)imagesWidth)*255.0)); 
-//			int rgb = p.getARGB();
-//			for (int j = 0; j<imagesHeight; ++j) {
-//				redImage.setRGB(i, j, rgb);
-//			}
-//		}
-//		if (redCS != null) {
-//			redCS.update(redImage);
-//		}
-//	}
-//	
-//	public void computeGreenImage(int red, int green, int blue) {
-//		Pixel p = new Pixel(red, green, blue, 255); 
-//		for (int i = 0; i<imagesWidth; ++i) {
-//			p.setGreen((int)(((double)i / (double)imagesWidth)*255.0)); 
-//			int rgb = p.getARGB();
-//			for (int j = 0; j<imagesHeight; ++j) {
-//				greenImage.setRGB(i, j, rgb);
-//			}
-//		}
-//		if (greenCS != null) {
-//			greenCS.update(greenImage);
-//		}
-//	}
-//	
-//	public void computeBlueImage(int red, int green, int blue) { 
-//		Pixel p = new Pixel(red, green, blue, 255); 
-//		for (int i = 0; i<imagesWidth; ++i) {
-//			p.setBlue((int)(((double)i / (double)imagesWidth)*255.0)); 
-//			int rgb = p.getARGB();
-//			for (int j = 0; j<imagesHeight; ++j) {
-//				blueImage.setRGB(i, j, rgb);
-//			}
-//		}
-//		if (blueCS != null) {
-//			blueCS.update(blueImage);
-//		}
-//	}
-//	
 //	/**
 //	 * @return
 //	 */

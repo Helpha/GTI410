@@ -11,7 +11,7 @@ import java.awt.Color;
  */
 public class Conversion {
 	// basé sur les notes du cours
-	public static float[] RGBtoHSV(Color rgb) {
+	public static float[] RGBtoHSV(Pixel rgb) {
 
 		// v est le max de la valeur R, G ou B, initié à 0
 		float[] vmax = new float[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b)
@@ -101,7 +101,7 @@ public class Conversion {
 	 *            parametre v du HSV
 	 * @return couleur en type RGB
 	 */
-	public static Color HSVtoRGB(float h, float s, float v) {
+	public static Pixel HSVtoRGB(float h, float s, float v) {
 		float r, g, b;
 		r = g = b = 0;
 		h = h / 360;
@@ -151,16 +151,91 @@ public class Conversion {
 			b = (tempB * 255);
 		}
 
-		Color rgb = new Color((int) r, (int) g, (int) b);
+		Pixel rgb = new Pixel((int) r, (int) g, (int) b);
 
 		return rgb;
 	}
 
-	public static float[] RGBtoCMYK(Color rgb) {
-		return new float[];
-	}
+//	public static float[] RGBtoCMYK(Pixel rgb) {
+//		float red,green,blue;
+//		red = rgb.getRed();
+//		green = rgb.getGreen();
+//		blue = rgb.getBlue();
+//		float[] CYMK = new float[4];
+//		float c,m,y,k;
+//		
+//		k = Math.min(Math.min(255 - red, 255 - green), 255 - blue);
+//		if(k != 255){
+//			c = (255 - red - k) ;
+//			m = (255 - green - k) ;
+//			y = (255 - blue - k);
+//			CYMK[0] = c;
+//			CYMK[1] = m;
+//			CYMK[2] = y;
+//			CYMK[3] = k;
+//		}
+//		else{
+//			c = 255 - red;
+//            m = 255 - green;
+//            y = 255 - blue;
+//            CYMK[0] = c;
+//			CYMK[1] = m;
+//			CYMK[2] = y;
+//			CYMK[3] = k;
+//		}
+//		
+//		return CYMK ;
+//	}
+	 public static Pixel cmykToRgb(float testConvertiCMYK, float testConvertiCMYK2, float testConvertiCMYK3, float testConvertiCMYK4)
+	    {
+		 System.out.println("cmyk: c: " + testConvertiCMYK + " m: " + testConvertiCMYK2 + " y: " + testConvertiCMYK3 + " k: " + testConvertiCMYK4 );
+		 Pixel rgb;
+		 float R,G,B;
+	        if (testConvertiCMYK4!=255) {
+	             R = (255 * (1-testConvertiCMYK) * (1-testConvertiCMYK4)); 
+	             G = (255 * (1-testConvertiCMYK2) * (1-testConvertiCMYK4)); 
+	             B = (255 * (1-testConvertiCMYK3) * (1-testConvertiCMYK4));
+	            rgb = new Pixel((int)R,(int)G,(int)B);
+	        } else {
+	        	float color = 1 - testConvertiCMYK4;
+	             R =255 * color * (1 - testConvertiCMYK);
+	             G =255 * color * (1 - testConvertiCMYK2);
+	             B = 255 * color * (1 - testConvertiCMYK3);
+	            rgb = new Pixel((int)R,(int)G,(int)B);
+	        }
+	        return rgb;
+	    }
+						public static float[] RGBtoCMYK(Pixel rgb) {
+					float red,green,blue;
+					red = rgb.getRed();
+					red = red / 255;
+					green = rgb.getGreen() ;
+					green = green / 255;
+					blue = rgb.getBlue();
+					blue = blue / 255;
+					float[] CYMK = new float[4];
+					float c,m,y,k;
+					
+					k = 1 - (Math.max(Math.max(red,green),blue));
+					if(k != 1){
+						c = (1 - red - k)/(1-k) ;
+						m = (1 - green - k)/(1-k) ;
+						y = (1 - blue - k)/(1-k);
+						CYMK[0] = c;
+						CYMK[1] = m;
+						CYMK[2] = y;
+						CYMK[3] = k;
+					}
+					else{
+						c = 1 - red;
+			            m = 1 - green;
+			            y = 1 - blue;
+			            CYMK[0] = c;
+						CYMK[1] = m;
+						CYMK[2] = y;
+						CYMK[3] = k;
+					}
+					return CYMK ;
+				}
 }
 
-/*
-
- */

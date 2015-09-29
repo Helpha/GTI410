@@ -59,7 +59,7 @@ public class FillColorsMediator {
 		fillColorButton.addActionListener(
 			new AbstractAction() {
 				public void actionPerformed(ActionEvent ae) {
-					Application app = Application.getInstance();
+					Application app = Application.getInstance();				
 					Pixel p = ColorDialog.getColor(app, fill, 150);
 					setFillColor(p);
 				};

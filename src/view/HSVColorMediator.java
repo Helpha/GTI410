@@ -120,7 +120,7 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 				updateSaturation = true;
 			}
 			if (updateHue) {
-				//computeHueImage(hue, saturation, value);
+				computeHueImage(hue, saturation, value);
 			}
 			if (updateSaturation) {
 				//computeSaturationImage(hue, saturation, value);
@@ -140,140 +140,141 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		}
 
 
-//		
-//		public void computeHueImage(float hue, float saturation, float value) { 
-//			Pixel p = new Pixel(red, green, blue, 255); 
-//			for (int i = 0; i<imagesWidth; ++i) {
-//				p.setRed((int)(((double)i / (double)imagesWidth)*255.0)); 
-//				int rgb = p.getARGB();
-//				for (int j = 0; j<imagesHeight; ++j) {
-//					redImage.setRGB(i, j, rgb);
-//				}
-//			}
-//			if (redCS != null) {
-//				redCS.update(redImage);
-//			}
-//		}
-//		
-//		public void computeSaturationImage(float hue, float saturation, float value) {
-//			Pixel p = new Pixel(red, green, blue, 255); 
-//			for (int i = 0; i<imagesWidth; ++i) {
-//				p.setGreen((int)(((double)i / (double)imagesWidth)*255.0)); 
-//				int rgb = p.getARGB();
-//				for (int j = 0; j<imagesHeight; ++j) {
-//					greenImage.setRGB(i, j, rgb);
-//				}
-//			}
-//			if (greenCS != null) {
-//				greenCS.update(greenImage);
-//			}
-//		}
-//		
-//		public void computeValueImage(float hue, float saturation, float value) { 
-//			Pixel p = new Pixel(red, green, blue, 255); 
-//			for (int i = 0; i<imagesWidth; ++i) {
-//				p.setBlue((int)(((double)i / (double)imagesWidth)*255.0)); 
-//				int rgb = p.getARGB();
-//				for (int j = 0; j<imagesHeight; ++j) {
-//					blueImage.setRGB(i, j, rgb);
-//				}
-//			}
-//			if (blueCS != null) {
-//				blueCS.update(blueImage);
-//			}
-//		}
-		
-		
-		//conversion to do
-//		
-//		this.red = result.getPixel().();
-//		this.green = result.getPixel().getGreen();
-//		this.blue = result.getPixel().getBlue();
-//		this.result = result;
-//		result.addObserver(this);
-//		
-//		redImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
-//		greenImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
-//		blueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
-//		computeRedImage(red, green, blue);
-//		computeGreenImage(red, green, blue);
-//		computeBlueImage(red, green, blue); 	
-//	}
-//	/**
-//	 * @return
-//	 */
-//	public BufferedImage getBlueImage() {
-//		return blueImage;
-//	}
-//
-//	/**
-//	 * @return
-//	 */
-//	public BufferedImage getGreenImage() {
-//		return greenImage;
-//	}
-//
-//	/**
-//	 * @return
-//	 */
-//	public BufferedImage getRedImage() {
-//		return redImage;
-//	}
-//
+		//		
+				public void computeHueImage(float hue, float saturation, float value) { 
+					
+					Pixel p = new Pixel((int)hue,(int) saturation, (int)value, 360); 
+					for (int i = 0; i<imagesWidth; ++i) {
+						p.setRed((int)(((double)i / (double)imagesWidth)*360.0)); 
+						int rgb = p.getARGB();
+						for (int j = 0; j<imagesHeight; ++j) {
+							hueImage.setRGB(i, j, rgb);
+						}
+					}
+					if (hueCS != null) {
+						hueCS.update(hueImage);
+					}
+				}
+		//		
+		//		public void computeSaturationImage(float hue, float saturation, float value) {
+		//			Pixel p = new Pixel(red, green, blue, 255); 
+		//			for (int i = 0; i<imagesWidth; ++i) {
+		//				p.setGreen((int)(((double)i / (double)imagesWidth)*255.0)); 
+		//				int rgb = p.getARGB();
+		//				for (int j = 0; j<imagesHeight; ++j) {
+		//					greenImage.setRGB(i, j, rgb);
+		//				}
+		//			}
+		//			if (greenCS != null) {
+		//				greenCS.update(greenImage);
+		//			}
+		//		}
+		//		
+		//		public void computeValueImage(float hue, float saturation, float value) { 
+		//			Pixel p = new Pixel(red, green, blue, 255); 
+		//			for (int i = 0; i<imagesWidth; ++i) {
+		//				p.setBlue((int)(((double)i / (double)imagesWidth)*255.0)); 
+		//				int rgb = p.getARGB();
+		//				for (int j = 0; j<imagesHeight; ++j) {
+		//					blueImage.setRGB(i, j, rgb);
+		//				}
+		//			}
+		//			if (blueCS != null) {
+		//				blueCS.update(blueImage);
+		//			}
+		//		}
 
-//	/**
-//	 * @return
-//	 */
-//	public double getBlue() {
-//		return blue;
-//	}
-//
-//	/**
-//	 * @return
-//	 */
-//	public double getGreen() {
-//		return green;
-//	}
-//
-//	/**
-//	 * @return
-//	 */
-//	public double getRed() {
-//		return red;
-//	}
-//
-//
-//	/* (non-Javadoc)
-//	 * @see model.ObserverIF#update()
-//	 */
-//	public void update() {
-//		// When updated with the new "result" color, if the "currentColor"
-//		// is aready properly set, there is no need to recompute the images.
-//		Pixel currentColor = new Pixel(red, green, blue, 255);
-//		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
-//		
-//		red = result.getPixel().getRed();
-//		green = result.getPixel().getGreen();
-//		blue = result.getPixel().getBlue();
-//		
-//		redCS.setValue(red);
-//		greenCS.setValue(green);
-//		blueCS.setValue(blue);
-//		computeRedImage(red, green, blue);
-//		computeGreenImage(red, green, blue);
-//		computeBlueImage(red, green, blue);
-//		
-//		// Efficiency issue: When the color is adjusted on a tab in the 
-//		// user interface, the sliders color of the other tabs are recomputed,
-//		// even though they are invisible. For an increased efficiency, the 
-//		// other tabs (mediators) should be notified when there is a tab 
-//		// change in the user interface. This solution was not implemented
-//		// here since it would increase the complexity of the code, making it
-//		// harder to understand.
-//	}
-//
-//	
-//	
-//	
-	
+
+		//conversion to do
+		//		
+		//		this.red = result.getPixel().();
+		//		this.green = result.getPixel().getGreen();
+		//		this.blue = result.getPixel().getBlue();
+		//		this.result = result;
+		//		result.addObserver(this);
+		//		
+		//		redImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		//		greenImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		//		blueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		//		computeRedImage(red, green, blue);
+		//		computeGreenImage(red, green, blue);
+		//		computeBlueImage(red, green, blue); 	
+		//	}
+		//	/**
+		//	 * @return
+		//	 */
+		//	public BufferedImage getBlueImage() {
+		//		return blueImage;
+		//	}
+		//
+		//	/**
+		//	 * @return
+		//	 */
+		//	public BufferedImage getGreenImage() {
+		//		return greenImage;
+		//	}
+		//
+		//	/**
+		//	 * @return
+		//	 */
+		//	public BufferedImage getRedImage() {
+		//		return redImage;
+		//	}
+		//
+
+		//	/**
+		//	 * @return
+		//	 */
+		//	public double getBlue() {
+		//		return blue;
+		//	}
+		//
+		//	/**
+		//	 * @return
+		//	 */
+		//	public double getGreen() {
+		//		return green;
+		//	}
+		//
+		//	/**
+		//	 * @return
+		//	 */
+		//	public double getRed() {
+		//		return red;
+		//	}
+		//
+		//
+		//	/* (non-Javadoc)
+		//	 * @see model.ObserverIF#update()
+		//	 */
+		//	public void update() {
+		//		// When updated with the new "result" color, if the "currentColor"
+		//		// is aready properly set, there is no need to recompute the images.
+		//		Pixel currentColor = new Pixel(red, green, blue, 255);
+		//		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
+		//		
+		//		red = result.getPixel().getRed();
+		//		green = result.getPixel().getGreen();
+		//		blue = result.getPixel().getBlue();
+		//		
+		//		redCS.setValue(red);
+		//		greenCS.setValue(green);
+		//		blueCS.setValue(blue);
+		//		computeRedImage(red, green, blue);
+		//		computeGreenImage(red, green, blue);
+		//		computeBlueImage(red, green, blue);
+		//		
+		//		// Efficiency issue: When the color is adjusted on a tab in the 
+		//		// user interface, the sliders color of the other tabs are recomputed,
+		//		// even though they are invisible. For an increased efficiency, the 
+		//		// other tabs (mediators) should be notified when there is a tab 
+		//		// change in the user interface. This solution was not implemented
+		//		// here since it would increase the complexity of the code, making it
+		//		// harder to understand.
+		//	}
+		//
+		//	
+			
+			
+
 }

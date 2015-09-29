@@ -26,7 +26,7 @@ import javax.swing.border.EtchedBorder;
 import model.Document;
 import controller.Dispatcher;
 
-/**
+/**createRGBPanel
  * <p>Title: Application</p>
  * <p>Description: Class managing the runtime application instance</p>
  * <p>Copyright: Copyright (c) 2003 Mohammed Elghaouat, Eric Paquette</p>

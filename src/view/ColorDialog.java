@@ -42,7 +42,7 @@ import model.Pixel;
 public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
-	private CMYKColorMediator cmykColorMediator;
+	private RGBColorMediator cmykColorMediator;
 	private HSVColorMediator hSVColorMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
@@ -122,7 +122,7 @@ public class ColorDialog extends JDialog {
 	
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
 
-		cmykColorMediator = new CMYKColorMediator(result, imageWidths, 30);
+		cmykColorMediator = new RGBColorMediator(result, imageWidths, 30);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

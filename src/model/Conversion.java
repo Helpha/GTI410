@@ -19,6 +19,7 @@ public class Conversion {
 		float[] vmin = new float[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b)
 										// ,
 										// vmax[1] = valeur
+		float delta;
 		float h, s, v;
 		float red, green, blue;
 		red = rgb.getRed();
@@ -28,13 +29,13 @@ public class Conversion {
 		// le [1] contient la valeur du max et du min
 		vmax[1] = Math.max(red, Math.max(green, blue));
 		vmin[1] = Math.min(red, Math.min(green, blue));
-
 		v = vmax[1];
 		s = (v - vmin[1]) / v;
 
 		// on valide ensuite si les valeur min et max représentent le Rouge,
 		// Vert, ou Bleu
 		// couleur max est rouge
+		
 		if (vmax[1] == red) {
 			vmax[0] = 0;
 			System.out.println("vmax est rouge");
@@ -64,7 +65,7 @@ public class Conversion {
 			vmin[0] = 2;
 			System.out.println("vmin est bleu");
 		}
-
+		System.out.println("wat");
 		// on calcule ensuite le s
 		h = 0;
 		if (vmax[0] == 0 && vmin[0] == 1) {
@@ -81,88 +82,95 @@ public class Conversion {
 			h = (5 - ((blue - red) / (blue - green)));
 		}
 		h = h * 60;
+		h = Math.round(h);
 		float[] hsv = new float[3];
 		hsv[0] = h;
 		hsv[1] = s;
 		hsv[2] = v / 255;
 		return hsv;
 	}
-
-	/**
-	 * algorithme utilisé sur
-	 * http://www.easyrgb.com/index.php?X=MATH&H=21#text21
-	 * 
-	 * @param h
-	 *            parametre h du HSV
-	 * @param s
-	 *            parametre s du HSV
-	 * @param v
-	 *            parametre v du HSV
-	 * @return couleur en type RGB
-	 */
-	/**
-	 * algorithme utilisé sur
-	 * http://www.easyrgb.com/index.php?X=MATH&H=21#text21
-	 * 
-	 * @param h
-	 *            parametre h du HSV
-	 * @param s
-	 *            parametre s du HSV
-	 * @param v
-	 *            parametre v du HSV
-	 * @return couleur en type RGB
-	 */
 	public static Pixel HSVtoRGB(float h, float s, float v) {
-		float r, g, b;
+		float c, x, m, r,g,b;
+		c = v * s;
+		x = c * (1 - Math.abs((h/60)%2 - 1));
+		m = v - c;
 		r = g = b = 0;
-		h = h / 360;
-		if (s == 0) {
-			r = (v * 255);
-			g = (v * 255);
-			b = (v * 255);
-		} else {
-			float tempH = h * 6;
-			// le H doit être plus petit que 1
-			if (tempH == 6) {
-				tempH = 0;
-			}
-			int tempI = (int) Math.floor(tempH);
-			float temp1 = (v * (1 - s));
-			float temp2 = (v * (1 - s * (tempH - tempI)));
-			float temp3 = (v * (1 - s * (1 - (tempH - tempI))));
-			float tempR, tempG, tempB = 0;
-
-			if (tempI == 0) {
-				tempR = v;
-				tempG = temp3;
-				tempB = temp1;
-			} else if (tempI == 1) {
-				tempR = temp2;
-				tempG = v;
-				tempB = temp1;
-			} else if (tempI == 2) {
-				tempR = temp1;
-				tempG = v;
-				tempB = temp3;
-			} else if (tempI == 3) {
-				tempR = temp1;
-				tempG = temp2;
-				tempB = v;
-			} else if (tempI == 4) {
-				tempR = temp3;
-				tempG = temp1;
-				tempB = v;
-			} else {
-				tempR = v;
-				tempG = temp1;
-				tempB = temp2;
-			}
-			r = (tempR * 255);
-			g = (tempG * 255);
-			b = (tempB * 255);
+		
+		if(h <60 && h>=0){
+			r = c;
+			g = x;
+			b = 0;
+		}else if(h < 120 && h>=60){
+			r = x;
+			g = c;
+			b = 0;
+		}else if(h <180 && h>=120){
+			r = 0;
+			g = c;
+			b = x;
+		}else if(h <240 && h>=180){
+			r = 0;
+			g = x;
+			b = c;
+		}else if(h <300 && h>=240){
+			r = x;
+			g = 0;
+			b = c;
+		}else if(h <360 && h>=300){
+			r = c;
+			g = 0;
+			b = x;
 		}
-
-		Pixel rgb = new Pixel((int) Math.ceil((double) r), (int) Math.ceil((double) g), (int) Math.ceil((double) b));
+		
+//		if (s == 0) {
+//			r = (v * 255);
+//			g = (v * 255);
+//			b = (v * 255);
+//		} else {
+//			float tempH = h * 6;
+//			// le H doit être plus petit que 1
+//			if (tempH == 6) {
+//				tempH = 0;
+//			}
+//			int tempI = (int) Math.floor(tempH);
+//			float temp1 = (v * (1 - s));
+//			float temp2 = (v * (1 - s * (tempH - tempI)));
+//			float temp3 = (v * (1 - s * (1 - (tempH - tempI))));
+//			float tempR, tempG, tempB = 0;
+//
+//			if (tempI == 0) {
+//				tempR = v;
+//				tempG = temp3;
+//				tempB = temp1;
+//			} else if (tempI == 1) {
+//				tempR = temp2;
+//				tempG = v;
+//				tempB = temp1;
+//			} else if (tempI == 2) {
+//				tempR = temp1;
+//				tempG = v;
+//				tempB = temp3;
+//			} else if (tempI == 3) {
+//				tempR = temp1;
+//				tempG = temp2;
+//				tempB = v;
+//			} else if (tempI == 4) {
+//				tempR = temp3;
+//				tempG = temp1;
+//				tempB = v;
+//			} else {
+//				tempR = v;
+//				tempG = temp1;
+//				tempB = temp2;
+//			}
+//			r = (tempR * 255);
+//			g = (tempG * 255);
+//			b = (tempB * 255);
+//		}
+		r = (r+m) * 255;
+		g = (g+m) * 255;
+		b = (b+m) * 255;
+		Pixel rgb = new Pixel((int) Math.round((double) r), (int) Math.round((double) g), (int) Math.round((double) b));
 
 		return rgb;
 	}

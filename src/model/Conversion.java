@@ -11,7 +11,7 @@ import java.awt.Color;
  */
 public class Conversion {
  // basé sur les notes du cours
-	public static float[] RGBtoHSV(Color rgb) {
+	public static float[] RGBtoHSV(Pixel rgb) {
 
 		// v est le max de la valeur R, G ou B, initié à 0
 		float[] vmax = new float[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b) ,
@@ -93,7 +93,7 @@ public class Conversion {
  * @param v parametre v du HSV
  * @return couleur en type RGB
  */
-	public static Color HSVtoRGB(float h, float s, float v) {
+	public static Pixel HSVtoRGB(float h, float s, float v) {
 		float r,g,b;	
 		 r = g = b = 0;
 		 h = h / 360;
@@ -145,7 +145,7 @@ public class Conversion {
 			 b = (tempB * 255);
 		 }
 		
-		Color rgb = new Color((int)Math.ceil((double)r),(int)Math.ceil((double)g),(int)Math.ceil((double)b));
+		 Pixel rgb = new Pixel((int)Math.ceil((double)r),(int)Math.ceil((double)g),(int)Math.ceil((double)b));
 		
 		return rgb;
 	}

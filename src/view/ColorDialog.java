@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import model.Conversion;
 import model.Pixel;
 
 /**
@@ -42,6 +43,7 @@ public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
 	private CMYKColorMediator cmykColorMediator;
+	private HSVColorMediator hSVColorMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
 	
@@ -140,7 +142,7 @@ public class ColorDialog extends JDialog {
 		return panel;
 	}
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
-		HSVColorMediator hsvColorMediator = new HSVColorMediator(result, imageWidths, 30);
+		hSVColorMediator = new HSVColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
@@ -148,17 +150,17 @@ public class ColorDialog extends JDialog {
 		int greenToConvert = result.getPixel().getGreen();
 		int blueToConvert = result.getPixel().getBlue();
 		
-		float recievedHue[] = conv
+		float recievedHue[] = Conversion.RGBtoHSV(result.getPixel());
 	
 		
-		ColorSlider csHue = new ColorSlider("H:", recievedHue[0], hsvColorMediator.getRedImage());
-		ColorSlider csSaturation = new ColorSlider("S:", recievedHue[1], hsvColorMediator.getGreenImage());
-		ColorSlider csValue = new ColorSlider("V:", recievedHue[2], hsvColorMediator.getBlueImage());
+		ColorSlider csHue = new ColorSlider("H:", (int)recievedHue[0], hSVColorMediator.getHueImage());
+		ColorSlider csSaturation = new ColorSlider("S:", (int)recievedHue[1], hSVColorMediator.getSaturationImage());
+		ColorSlider csValue = new ColorSlider("V:",(int) recievedHue[2], hSVColorMediator.getValueImage());
 		
 		
-		hsvColorMediator.setHueCS(csHue);
-		hsvColorMediator.setSaturationCS(csSaturation);
-		hsvColorMediator.setValueCS(csValue);
+		hSVColorMediator.setHueCS(csHue);
+		hSVColorMediator.setSaturationCS(csSaturation);
+		hSVColorMediator.setValueCS(csValue);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(csHue);

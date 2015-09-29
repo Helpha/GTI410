@@ -16,6 +16,7 @@
 package view;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 
 import model.ObserverIF;
 import model.Pixel;
@@ -42,7 +43,8 @@ class RGBColorMediator extends Object implements SliderObserver, ObserverIF {
 		this.blue = result.getPixel().getBlue();
 		this.result = result;
 		result.addObserver(this);
-		
+
+
 		redImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		greenImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		blueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);

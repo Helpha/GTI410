@@ -14,9 +14,9 @@ public class Conversion {
 	public static float[] RGBtoHSV(Color rgb) {
 
 		// v est le max de la valeur R, G ou B, initié à 0
-		int[] vmax = new int[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b) ,
+		float[] vmax = new float[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b) ,
 									// vmax[1] = valeur
-		int[] vmin = new int[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b) ,
+		float[] vmin = new float[2]; // vmax[0] = couleur (0 = r , 1 = g, 2 = b) ,
 									// vmax[1] = valeur
 		float h, s, v;
 		float red, green, blue;
@@ -25,10 +25,8 @@ public class Conversion {
 		blue = rgb.getBlue();
 
 		// le [1] contient la valeur du max et du min
-		vmax[1] = (int) Math.max(red, Math.max(green, blue));
-		vmin[1] = (int) Math.min(red, Math.min(green, blue));
-		
-		System.out.println("vmax: " + vmax[1] + ", vmin: " + vmin[1]);
+		vmax[1] = Math.max(red, Math.max(green, blue));
+		vmin[1] = Math.min(red, Math.min(green, blue));
 
 		v = vmax[1];
 		s = (v - vmin[1]) / v;
@@ -87,17 +85,6 @@ public class Conversion {
 		hsv[1] = s;
 		hsv[2] = v / 255;
 		return hsv;
-		/*
-		 * v = max(R,G,B); // Value
-s = (v-min(R,G,B)) / v // Saturation;
-if(R=max && G=min) h=5+(R-B)/(R-G);
-else if(R=max && B=min) h=1-(R-G)/(R-B);
-else if(G=max && B=min) h=1+(G-R)/(G-B);
-else if(G=max && R=min) h=3-(G-B)/(G-R);
-else if(B=max && R=min) h=3+(B-G)/(B-R);
-else if(B=max && G=min) h=5-(B-R)/(B-G);
-h = h * 60;
-		 */
 	}
 /**
  * algorithme utilisé sur http://www.easyrgb.com/index.php?X=MATH&H=21#text21
@@ -107,14 +94,13 @@ h = h * 60;
  * @return couleur en type RGB
  */
 	public static Color HSVtoRGB(float h, float s, float v) {
-		int r,g,b;	
-		System.out.println("h: " + h + ", s: " +s + ", v: " + v);
+		float r,g,b;	
 		 r = g = b = 0;
 		 h = h / 360;
 		 if(s == 0){
-			 r = (int) (v * 255);
-			 g = (int) (v * 255);
-			 b = (int) (v * 255);
+			 r =  (v * 255);
+			 g =  (v * 255);
+			 b =  (v * 255);
 		 }
 		 else{
 			 float tempH = h * 6;
@@ -154,14 +140,13 @@ h = h * 60;
 				 tempG = temp1;
 				 tempB = temp2;
 			 }
-			 r =  (int) (tempR * 255);
-			 g = (int) (tempG * 255);
-			 b = (int) (tempB * 255);
-			 System.out.println("r: " + r + ", g: "+ g + ", b: " + b);
+			 r =  (tempR * 255);
+			 g = (tempG * 255);
+			 b = (tempB * 255);
 		 }
 		
-		Color rgb = new Color(r,g,b);
-
+		Color rgb = new Color((int)Math.ceil((double)r),(int)Math.ceil((double)g),(int)Math.ceil((double)b));
+		
 		return rgb;
 	}
 }

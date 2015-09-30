@@ -42,7 +42,7 @@ import model.Pixel;
 public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
-	private RGBColorMediator cmykColorMediator;
+	private CMYKColorMediator cmykColorMediator;
 	private HSVColorMediator hSVColorMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
@@ -122,22 +122,27 @@ public class ColorDialog extends JDialog {
 	
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
 
-		cmykColorMediator = new RGBColorMediator(result, imageWidths, 30);
-		
+		cmykColorMediator = new CMYKColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		ColorSlider csRed = new ColorSlider("R:", result.getPixel().getRed(), cmykColorMediator.getRedImage());
-		ColorSlider csGreen = new ColorSlider("G:", result.getPixel().getGreen(), cmykColorMediator.getGreenImage());
-		ColorSlider csBlue = new ColorSlider("B:", result.getPixel().getBlue(), cmykColorMediator.getBlueImage());
 		
-		cmykColorMediator.setRedCS(csRed);
-		cmykColorMediator.setGreenCS(csGreen);
-		cmykColorMediator.setBlueCS(csBlue);
+		float recievedCMYK[] = Conversion.RGBtoCMYK(result.getPixel());
+		
+		ColorSlider csCyan = new ColorSlider("C:", (int)recievedCMYK[0], cmykColorMediator.getCyanImage());
+		ColorSlider csMagenta = new ColorSlider("M:", (int)recievedCMYK[1], cmykColorMediator.getMagentaImage());
+		ColorSlider csYellow = new ColorSlider("Y:",(int) recievedCMYK[2], cmykColorMediator.getYellowImage());
+		ColorSlider csKey = new ColorSlider("K:",(int) recievedCMYK[3], cmykColorMediator.getKeyImage());
+		
+		cmykColorMediator.setCyanCS(csCyan);
+		cmykColorMediator.setMagentaCS(csMagenta);
+		cmykColorMediator.setYellowCS(csYellow);
+		cmykColorMediator.setKeyCS(csKey);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(csRed);
-		panel.add(csGreen);
-		panel.add(csBlue);
+		panel.add(csCyan);
+		panel.add(csMagenta);
+		panel.add(csYellow);
+		panel.add(csKey);
 		
 		return panel;
 	}
@@ -145,10 +150,6 @@ public class ColorDialog extends JDialog {
 		hSVColorMediator = new HSVColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
-		int redToConvert = result.getPixel().getRed();
-		int greenToConvert = result.getPixel().getGreen();
-		int blueToConvert = result.getPixel().getBlue();
 		
 		float recievedHue[] = Conversion.RGBtoHSV(result.getPixel());
 	

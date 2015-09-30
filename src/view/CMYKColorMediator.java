@@ -160,8 +160,8 @@ public class CMYKColorMediator extends Object implements SliderObserver,
 			 computeKeyImage(cyan, magenta, yellow, key);
 		}
 		
-		// Pixel pixel = new Pixel(red, green, blue, 255);
-		// result.setPixel(pixel);
+		Pixel pixel = Conversion.cmykToRgb(cyan, magenta, yellow, key);
+		result.setPixel(pixel);
 	}
 
 	//

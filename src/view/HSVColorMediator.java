@@ -125,8 +125,8 @@ public class HSVColorMediator extends Object implements SliderObserver,
 			 computeValueImage(hue, saturation, value);
 		}
 		
-		// Pixel pixel = new Pixel(red, green, blue, 255);
-		// result.setPixel(pixel);
+		 Pixel pixel = Conversion.HSVtoRGB(hue, saturation, value);
+		 result.setPixel(pixel);
 	}
 
 	//

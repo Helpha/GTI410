@@ -5,7 +5,7 @@ import java.awt.Color;
 public class testConversion {
 
 	public static void main(String[] args) {
-		Pixel test = new Pixel(245,156,214);
+		Pixel test = new Pixel(252,182,116);
 		
 		float[] testConverti = Conversion.RGBtoHSV(test);
 		System.out.println("hsv: h: " + testConverti[0] + " s: " + testConverti[1] + " v: " + testConverti[2]);

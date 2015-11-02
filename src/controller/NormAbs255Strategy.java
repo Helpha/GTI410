@@ -45,7 +45,7 @@ public class NormAbs255Strategy extends ImageConversionStrategy {
 	 * @return valeur normalisée
 	 */
 	private double normalizedValue(double chosenColor, double red, double green, double blue){
-		//http://www.roborealm.com/help/Normalize%20Color.php
+		// http://www.roborealm.com/help/Normalize%20Color.php
 		double sum = 0;
 		double result = 0; 
 		sum = Math.abs(red) + Math.abs(blue) + Math.abs(green);

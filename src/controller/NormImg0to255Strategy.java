@@ -11,11 +11,7 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 	private final double newMaxValue = 255.0;
 	private final double newRangeValue = newMaxValue - newMinValue;
 
-	// vieilles valeurs maximales du pixel
-	private double oldMaxRed;
-	private double oldMaxGreen;
-	private double oldMaxBlue;
-	private double oldMaxAlpha;
+	
 
 	// vieilles valeurs minimales du pixel
 	private double oldMinRed;
@@ -23,6 +19,12 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 	private double oldMinBlue;
 	private double oldMinAlpha;
 
+	// vieilles valeurs maximales du pixel
+		private double oldMaxRed;
+		private double oldMaxGreen;
+		private double oldMaxBlue;
+		private double oldMaxAlpha;
+		
 	// vieilles valeur de l'écart
 	private double oldRangeRed;
 	private double oldRangeGreen;

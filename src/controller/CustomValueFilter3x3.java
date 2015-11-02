@@ -7,7 +7,7 @@ import model.PixelDouble;
 /**
  * Classe implémentant les filtres
  */
-public class ConvolveFilter3x3 extends Filter {
+public class CustomValueFilter3x3 extends Filter {
 	private double filterMatrix[][] = null;
 
 	private double inverseK = 0;
@@ -16,7 +16,7 @@ public class ConvolveFilter3x3 extends Filter {
 	 * @param paddingStrategy PaddingStrategy used 
 	 * @param conversionStrategy ImageConversionStrategy used
 	 */
-	public ConvolveFilter3x3(PaddingStrategy paddingStrategy,
+	public CustomValueFilter3x3(PaddingStrategy paddingStrategy,
 			ImageConversionStrategy conversionStrategy) {
 		super(paddingStrategy, conversionStrategy);
 		filterMatrix = new double[3][3];

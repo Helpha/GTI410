@@ -43,7 +43,7 @@ import model.Shape;
  */
 public class FilteringTransformer extends AbstractTransformer {
 
-	ConvolveFilter3x3 filter = new ConvolveFilter3x3(new PaddingZeroStrategy(),
+	CustomValueFilter3x3 filter = new CustomValueFilter3x3(new PaddingZeroStrategy(),
 			new ImageClampStrategy());
 	/**
 	 * @param _coordinates

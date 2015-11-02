@@ -11,11 +11,13 @@
    You should have received a copy of the GNU General Public License
    along with j2dcg; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 package controller;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import model.ImageDouble;
 import model.ImageX;
@@ -23,44 +25,60 @@ import model.Shape;
 
 /**
  * 
- * <p>Title: FilteringTransformer</p>
- * <p>Description: ... (AbstractTransformer)</p>
- * <p>Copyright: Copyright (c) 2004 Sébastien Bois, Eric Paquette</p>
- * <p>Company: (ÉTS) - École de Technologie Supérieure</p>
+ * <p>
+ * Title: FilteringTransformer
+ * </p>
+ * <p>
+ * Description: ... (AbstractTransformer)
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2004 Sébastien Bois, Eric Paquette
+ * </p>
+ * <p>
+ * Company: (ÉTS) - École de Technologie Supérieure
+ * </p>
+ * 
  * @author unascribed
  * @version $Revision: 1.6 $
  */
-public class FilteringTransformer extends AbstractTransformer{
-	Filter filter = new MeanFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
-	
+public class FilteringTransformer extends AbstractTransformer {
+
+	ConvolveFilter3x3 filter = new ConvolveFilter3x3(new PaddingZeroStrategy(),
+			new ImageClampStrategy());
 	/**
 	 * @param _coordinates
 	 * @param _value
 	 */
 	public void updateKernel(Coordinates _coordinates, float _value) {
 		System.out.println("[" + (_coordinates.getColumn() - 1) + "]["
-                                   + (_coordinates.getRow() - 1) + "] = " 
-                                   + _value);
-	}
+				+ (_coordinates.getRow() - 1) + "] = " + _value);
 		
+		filter.updateKernel((_coordinates.getColumn() - 1), (_coordinates
+				.getRow() - 1), _value);
+	}
+
 	/**
 	 * 
 	 * @param e
 	 * @return
 	 */
-	protected boolean mouseClicked(MouseEvent e){
-		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
-		if (!intersectedObjects.isEmpty()) {			
-			Shape shape = (Shape)intersectedObjects.get(0);			
-			if (shape instanceof ImageX) {				
-				ImageX currentImage = (ImageX)shape;
-				ImageDouble filteredImage = filter.filterToImageDouble(currentImage);
-				ImageX filteredDisplayableImage = filter.getImageConversionStrategy().convert(filteredImage);
+	protected boolean mouseClicked(MouseEvent e) {
+		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e
+				.getPoint());
+		if (!intersectedObjects.isEmpty()) {
+			Shape shape = (Shape) intersectedObjects.get(0);
+			if (shape instanceof ImageX) {
+				ImageX currentImage = (ImageX) shape;
+				ImageDouble filteredImage = filter
+						.filterToImageDouble(currentImage);
+				ImageX filteredDisplayableImage = filter
+						.getImageConversionStrategy().convert(filteredImage);
 				currentImage.beginPixelUpdate();
-				
+
 				for (int i = 0; i < currentImage.getImageWidth(); ++i) {
 					for (int j = 0; j < currentImage.getImageHeight(); ++j) {
-						currentImage.setPixel(i, j, filteredDisplayableImage.getPixelInt(i, j));
+						currentImage.setPixel(i, j,
+								filteredDisplayableImage.getPixelInt(i, j));
 					}
 				}
 				currentImage.endPixelUpdate();
@@ -69,16 +87,36 @@ public class FilteringTransformer extends AbstractTransformer{
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see controller.AbstractTransformer#getID()
 	 */
-	public int getID() { return ID_FILTER; }
+	public int getID() {
+		return ID_FILTER;
+	}
 
 	/**
 	 * @param string
 	 */
 	public void setBorder(String string) {
-		System.out.println(string);
+
+		System.out.println("Set Border: " + string);
+
+		if (string.equals("Mirror")) {
+
+			filter.setPaddingStrategy(new PaddingMirrorStrategy());
+		} else if (string.equals("0")) {
+			filter.setPaddingStrategy(new PaddingZeroStrategy());
+
+		} else {
+			System.out.println("No Border Filter");
+			JOptionPane.showMessageDialog(null, "None", "Alert",
+					JOptionPane.ERROR_MESSAGE);
+			filter.setPaddingStrategy(null);
+
+		}
+
 	}
 
 	/**
@@ -86,5 +124,15 @@ public class FilteringTransformer extends AbstractTransformer{
 	 */
 	public void setClamp(String string) {
 		System.out.println(string);
+
+		if (string.equals("Clamp 0...255")) {
+			filter.setImageConversionStrategy(new ImageClampStrategy());
+		} else if (string.equals("Abs and normalize to 255")) {
+			filter.setImageConversionStrategy(new NormAbs255Strategy());
+		} else if (string.equals("Abs and normalize 0 to 255")) {
+			filter.setImageConversionStrategy(new NormAbs0to255Strategy());
+		} else if (string.equals("Normalize 0 to 255")) {
+			filter.setImageConversionStrategy(new NormImg0to255Strategy());
+		}
 	}
 }

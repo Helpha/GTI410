@@ -24,7 +24,7 @@ import model.*;
  * @author unascribed
  * @version $Revision: 1.11 $
  */
-public class MeanFilter3x3 extends Filter {	
+public class FilterTp3 extends Filter {	
 	private double filterMatrix[][] = null;
 	
 	/**
@@ -32,7 +32,7 @@ public class MeanFilter3x3 extends Filter {
 	 * @param paddingStrategy PaddingStrategy used 
 	 * @param conversionStrategy ImageConversionStrategy used
 	 */
-	public MeanFilter3x3(PaddingStrategy paddingStrategy, 
+	public FilterTp3(PaddingStrategy paddingStrategy, 
 						 ImageConversionStrategy conversionStrategy) {
 		super(paddingStrategy, conversionStrategy);	
 		filterMatrix = new double[3][3];

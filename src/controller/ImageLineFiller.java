@@ -53,10 +53,12 @@ public class ImageLineFiller extends AbstractTransformer {
 	public int getID() { return ID_FLOODER; } 
 	
 	protected boolean mouseClicked(MouseEvent e){
+		System.out.println("il y a eu un mouse click");
 		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
 		if (!intersectedObjects.isEmpty()) {
 			Shape shape = (Shape)intersectedObjects.get(0);
 			if (shape instanceof ImageX) {
+				System.out.println("image sélectionnée");
 				currentImage = (ImageX)shape;
 				currentImageWidth = currentImage.getImageWidth();
 
@@ -85,6 +87,7 @@ public class ImageLineFiller extends AbstractTransformer {
 	 * Horizontal line fill with specified color
 	 */
 	private void horizontalLineFill(Point ptClicked) {
+		System.out.println("horitonztal line fill");
 		Stack stack = new Stack();
 		stack.push(ptClicked);
 		while (!stack.empty()) {

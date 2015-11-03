@@ -11,8 +11,6 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 	private final double newMaxValue = 255.0;
 	private final double newRangeValue = newMaxValue - newMinValue;
 
-	
-
 	// vieilles valeurs minimales du pixel
 	private double oldMinRed;
 	private double oldMinGreen;
@@ -20,11 +18,11 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 	private double oldMinAlpha;
 
 	// vieilles valeurs maximales du pixel
-		private double oldMaxRed;
-		private double oldMaxGreen;
-		private double oldMaxBlue;
-		private double oldMaxAlpha;
-		
+	private double oldMaxRed;
+	private double oldMaxGreen;
+	private double oldMaxBlue;
+	private double oldMaxAlpha;
+
 	// vieilles valeur de l'écart
 	private double oldRangeRed;
 	private double oldRangeGreen;
@@ -47,21 +45,13 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 			for (int y = 0; y < imageHeight; y++) {
 				curPixelDouble = image.getPixel(x, y);
 
-				newImage.setPixel(
-						x,
-						y,
-						new Pixel((int) (normalizedValue(newRangeValue,
-								oldRangeRed, oldMinRed,
-								curPixelDouble.getRed())),
-								(int) (normalizedValue(newRangeValue,
-										oldRangeGreen, oldMinGreen,
+				newImage.setPixel(x, y,
+						new Pixel(
+								(int) (normalizedValue(newRangeValue, oldRangeRed, oldMinRed, curPixelDouble.getRed())),
+								(int) (normalizedValue(newRangeValue, oldRangeGreen, oldMinGreen,
 										curPixelDouble.getGreen())),
-								(int) (normalizedValue(newRangeValue,
-										oldRangeBlue, oldMinBlue,
-										curPixelDouble.getBlue())),
-								(int) (normalizedValue(newRangeValue,
-										oldRangeAlpha, oldMinAlpha,
-										curPixelDouble.getAlpha()))));
+						(int) (normalizedValue(newRangeValue, oldRangeBlue, oldMinBlue, curPixelDouble.getBlue())),
+						(int) (normalizedValue(newRangeValue, oldRangeAlpha, oldMinAlpha, curPixelDouble.getAlpha()))));
 			}
 		}
 		newImage.endPixelUpdate();
@@ -121,9 +111,8 @@ public class NormImg0to255Strategy extends ImageConversionStrategy {
 		this.oldMaxAlpha = alpha;
 
 	}
-
-	private double normalizedValue(double newRange, double oldRange,
-			double oldMin, double value) {
+    //C10H15N
+	private double normalizedValue(double newRange, double oldRange, double oldMin, double value) {
 		// http://stackoverflow.com/questions/695084/how-do-i-normalize-an-image
 		double val = 0.0;
 		val = (value - oldMin) * (newRange / oldRange) + newMinValue;

@@ -173,7 +173,7 @@ public class CurvesPanel extends JPanel implements DocObserver {
 				ti.getTheCurves().activate();
 			}
 		});
-		
+	
 		newCurve.setSelected(true);
 		
 		curvesTransformer = ti.getTheCurves();

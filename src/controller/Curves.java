@@ -121,18 +121,19 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			System.out.println("Curve type [" + string + "] is unknown.");
 		}
 	}
-	
+	//http://www.cs.helsinki.fi/group/goa/mallinnus/curves/curves.html
 	public void alignControlPoint() {
+		
 		if (curve != null) {
 			System.out.println("OUÉ");
 			Document doc = Application.getInstance().getActiveDocument();
 			List selectedObjects = doc.getSelectedObjects(); 
+			
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					//S'il n'est pas P2 il est définitivement P3
-					boolean estP2 = true;
+
 					if(controlPointIndex == 0){
 						System.out.println("Impossible d'aligner un point de départ");
 						return;
@@ -141,81 +142,25 @@ public class Curves extends AbstractTransformer implements DocObserver {
 						System.out.println("Impossible d'aligner un point de fin");
 						return;
 					}
-					
-					if(controlPointIndex == 2 ){
-						estP2 = false;				
-					}
 									
 					Point precedent = ((ControlPoint) curve.getShapes().get(controlPointIndex-1)).getCenter();
 					Point suivant = ((ControlPoint) curve.getShapes().get(controlPointIndex+1)).getCenter();
 					Point courant = ((ControlPoint) curve.getShapes().get(controlPointIndex)).getCenter();
 					
-//					Point r1 =  new Point((int)(courant.getX()-precedent.getX()), (int)(courant.getY()-precedent.getY()));
-//					Point r4 = new Point((int)(suivant.getX()-courant.getX()), (int)(suivant.getY()-courant.getY()));
 					
-					Point p1 = ((ControlPoint) curve.getShapes().get(0)).getCenter();
-					Point p2 = ((ControlPoint) curve.getShapes().get(1)).getCenter();
-					Point p3 = ((ControlPoint) curve.getShapes().get(2)).getCenter();
-					Point p4 = ((ControlPoint) curve.getShapes().get(3)).getCenter();
+					Point r1 = new Point((int)(courant.getX()-precedent.getX()),(int)(courant.getY()-precedent.getY()));
+					Point r4 = new Point((int)(courant.getX()-suivant.getX()),(int)(courant.getY()-suivant.getY()));
 					
-					Point r1 = new Point((int)(p2.getX()-p1.getX()),(int)(p2.getY()-p1.getY()));
-					Point r4 = new Point((int)(p4.getX()-p3.getX()),(int)(p4.getY()-p3.getY()));
+					double distancePrecedent = Math.sqrt(Math.pow(r1.getX(), 2) + Math.pow(r1.getY(), 2));
+					double distanceSuivant = Math.sqrt(Math.pow(r4.getX(), 2) + Math.pow(r4.getY(), 2));
 					
-					//http://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
-					   double angle = (double) Math.toDegrees(Math.atan2(r4.getY() - r1.getY(), r4.getX() - r1.getX()));
-					   
-					   if(angle < 0){
-					       angle += 360;
-					   }
-					   System.out.println(angle);
-					    
-					   double angleComplementaire = 360 - angle;
-					   System.out.println(angleComplementaire);
-					   
-					   //Si le point est P2, il faut lui appliquer une rotation de angleComplementaire par rapport a P1, réduisant l'écart a 0 degré
-					   double defaultX = 0;
-					   double defaultY = 0;
-					   double complementaireEnRadian = Math.toRadians(angleComplementaire);
-					   if(estP2)
-					   {
-						    defaultX = courant.getX() - precedent.getX();
-						    defaultY = courant.getY() - precedent.getY();
-							double nouveauX = defaultX * Math.cos(complementaireEnRadian) - defaultY * Math.sin(complementaireEnRadian);
-							double nouveauY = defaultX * Math.sin(complementaireEnRadian) + defaultY * Math.cos(complementaireEnRadian);
-							courant.setLocation(nouveauX + precedent.getX() , nouveauY + precedent.getY());
-						   						   						  						   					   
-					   } else					   
-					   {
-						    defaultX = courant.getX() - suivant.getX();
-						    defaultY = courant.getY() - suivant.getY();
-							double nouveauX = defaultX * Math.cos(complementaireEnRadian) - defaultY * Math.sin(complementaireEnRadian);
-							double nouveauY = defaultX * Math.sin(complementaireEnRadian) + defaultY * Math.cos(complementaireEnRadian);
-							courant.setLocation(nouveauX + suivant.getX() , nouveauY + suivant.getY());
-					   }
-					   
-
-
-//						double nouveauX = defaultX * Math.cos(complementaireEnRadian) - defaultY * Math.sin(complementaireEnRadian);
-//						double nouveauY = defaultX * Math.sin(complementaireEnRadian) + defaultY * Math.cos(complementaireEnRadian);
-//						courant.setLocation(nouveauX + courant.getX() , nouveauY + courant.getY());
-						curve.update();
-						((ControlPoint) curve.getShapes().get(controlPointIndex + 1)).setCenter(suivant);
-						
-						
-						 p1 = ((ControlPoint) curve.getShapes().get(0)).getCenter();
-						 p2 = ((ControlPoint) curve.getShapes().get(1)).getCenter();
-						 p3 = ((ControlPoint) curve.getShapes().get(2)).getCenter();
-						 p4 = ((ControlPoint) curve.getShapes().get(3)).getCenter();
-						
-						 r1 = new Point((int)(p2.getX()-p1.getX()),(int)(p2.getY()-p1.getY()));
-						 r4 = new Point((int)(p4.getX()-p3.getX()),(int)(p4.getY()-p3.getY()));
-						
-						//http://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
-						   angle = (double) Math.toDegrees(Math.atan2(r4.getY() - r1.getY(), r4.getX() - r1.getX()));
-						   
-						   System.out.println("Angle2" + angle);
-						
-						
+					double distanceRatio = distanceSuivant/distancePrecedent;
+					
+					Point nouveauPoint = new Point((int)(courant.getX()+r1.getX()*distanceRatio), (int)(courant.getY()+r1.getY()*distanceRatio));
+					suivant.setLocation(nouveauPoint);
+					
+					curve.update();
+																
 					System.out.println("Try to apply G1 continuity on control point [" + controlPointIndex + "]");
 				}
 			}
@@ -231,6 +176,28 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
+					
+					if(controlPointIndex == 0){
+						System.out.println("Impossible d'aligner un point de départ");
+						return;
+					}
+					if(controlPointIndex >=3 ){
+						System.out.println("Impossible d'aligner un point de fin");
+						return;
+					}
+		
+					Point precedent = ((ControlPoint) curve.getShapes().get(controlPointIndex-1)).getCenter();
+					Point suivant = ((ControlPoint) curve.getShapes().get(controlPointIndex+1)).getCenter();
+					Point courant = ((ControlPoint) curve.getShapes().get(controlPointIndex)).getCenter();
+					
+					
+					Point distance = new Point((int)(courant.getX()-precedent.getX()),(int)(courant.getY()-precedent.getY()));
+					
+					Point nouveauPoint = new Point((int)(courant.getX()+distance.getX()), (int) (courant.getY()+distance.getY()));
+					
+					suivant.setLocation(nouveauPoint);
+					curve.update();
+					
 					System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
 				}
 			}

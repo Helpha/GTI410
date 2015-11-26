@@ -14,7 +14,11 @@
 */
 package controller;
 
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.util.List;
+
+import model.Shape;
 
 /**
  * <p>Title: ShearYCommand</p>
@@ -43,7 +47,19 @@ public class ShearYCommand extends AnchoredTransformationCommand {
 		System.out.println("command: shearing on y-axis to " + angleDegrees +
 				           " degrees anchored on " + getAnchor());
 				           		
-		// voluntarily undefined
+		double shearY = Math.tan(Math.toRadians(angleDegrees));
+		Point anchor = getAnchorPoint(objects);
+		
+		for (Object shapeObj: objects){
+			Shape shape = (Shape) shapeObj;
+			mt.addMememto(shape);
+			AffineTransform transform = shape.getAffineTransform();
+			transform.translate(anchor.getX(), anchor.getY());
+			transform.shear(0, shearY);
+			transform.translate(-anchor.getX(), -anchor.getY());
+			shape.setAffineTransform(transform);
+			
+		}
 	}
 
 	/* (non-Javadoc)

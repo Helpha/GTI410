@@ -14,7 +14,10 @@
 */
 package controller;
 
+import java.awt.Point;
+import model.Shape;
 import java.util.List;
+import java.awt.geom.AffineTransform;
 
 /**
  * <p>Title: RotateCommand</p>
@@ -36,6 +39,7 @@ public class RotateCommand extends AnchoredTransformationCommand {
 		super(anchor);
 		this.thetaDegrees = thetaDegrees;
 		objects = aObjects;
+		System.out.println(thetaDegrees);
 	}
 	
 	/* (non-Javadoc)
@@ -45,6 +49,22 @@ public class RotateCommand extends AnchoredTransformationCommand {
 		System.out.println("command: rotate " + thetaDegrees +
                            " degrees around " + getAnchor() + ".");
 
+		Point anchor = getAnchorPoint(objects);
+		double thetaDegresEnRad = Math.toRadians(thetaDegrees);
+		for (Object shapeObj: objects){
+			Shape shape = (Shape) shapeObj;
+			mt.addMememto(shape);
+			AffineTransform transform = shape.getAffineTransform();
+			transform.rotate(thetaDegresEnRad, anchor.getX(), anchor.getY());
+			shape.setAffineTransform(transform);
+			
+		}
+		
+		
+		
+		
+		
+		
 		// voluntarily undefined
 	}
 
